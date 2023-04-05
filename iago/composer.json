@@ -1,0 +1,19 @@
+{
+    "name": "iago/fabricainfo",
+    "description": "projeto para armazenar e editar diretorios",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Iago\\Fabricainfo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "iago",
+            "email": "iagomateusads@hotmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

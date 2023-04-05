@@ -1,0 +1,42 @@
+FROM php:5.6
+
+# Instala dependências do sistema operacional
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instala dependências do Phinx via Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer global require robmorgan/phinx
+
+# Define a pasta de trabalho como /app
+WORKDIR /app
+
+# Copia o código-fonte do aplicativo para a pasta de trabalho
+COPY . /app
+
+# Instala as dependências do Bootstrap e jQuery via CDN
+RUN mkdir -p /app/public/css && \
+    mkdir -p /app/public/js && \
+    curl https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css -o /app/public/css/bootstrap.min.css && \
+    curl https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js -o /app/public/js/jquery.min.js && \
+    curl https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js -o /app/public/js/bootstrap.min.js
+
+# Expõe a porta 8000 para o servidor web do PHP
+EXPOSE 80
+
+# Inicia o servidor web do PHP
+CMD ["php", "-S", "0.0.0.0:80", "-t", "/app"]
+
+
+# FROM php:5.6
+
+# RUN apt-get update && apt-get install -y \
+#     libpq-dev \
+#     && docker-php-ext-install pdo pdo_pgsql
+
+# RUN curl -LO https://github.com/cakephp/phinx/releases/download/0.10.8/phinx-0.10.8.phar && \
+#     chmod +x phinx-0.10.8.phar && \
+#     mv phinx-0.10.8.phar /usr/local/bin/phinx
+
+# WORKDIR /app

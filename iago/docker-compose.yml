@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      POSTGRES_PASSWORD: root
+    volumes:
+          - ./app:/var/www/html 
+    restart: always
+
+volumes:
+  postgres_data:
+
+
+# version: "2"
+# services:
+#   php:
+#     build:
+#       context: .
+#       dockerfile: dockerfile
+#     ports:
+#       - "80:80"
+#     volumes:
+#       - .:/var/www/html
+#     networks:
+#       - app-network  
+#     environment:
+#       - TESTS_PHINX_DB_ADAPTER_POSTGRES_HOST=postgres
+#   db:
+#     image: postgres:9.4
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: postgres
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
+            
